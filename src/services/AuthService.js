@@ -18,7 +18,7 @@ async function login(username, password) {
     try {
         const data = await Model.getByUsername(username);
         if (!data) {
-            throw { statusCode: 403, message: "username or password invalid"};
+            throw { statusCode: 422, message: "username or password invalid"};
         }
 
         if (AuthHelper.compare(password, data.password)) {
