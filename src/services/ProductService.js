@@ -29,6 +29,12 @@ async function create(data) {
 
         return result;
     } catch (error) {
+        if (error.message.includes("m_products_sku_unique")) {
+            throw {
+                statusCode: 409,
+                message: "SKU already used"
+            };
+        }
         throw error;
     }
 }
@@ -43,7 +49,12 @@ async function update(id, data) {
 
         throw { statusCode: 404, message: "Product not found"};
     } catch (error) {
-        console.error(error);
+        if (error.message.includes("m_products_sku_unique")) {
+            throw {
+                statusCode: 409,
+                message: "SKU already used"
+            };
+        }
         throw error;
     }
 }
