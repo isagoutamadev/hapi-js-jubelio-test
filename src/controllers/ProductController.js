@@ -1,57 +1,10 @@
-const ProductService = require('../services/ProductService');
+const Service = require('../services/ProductService');
 
-async function getListProducts(request, h) {
+async function getList(request, h) {
     const { page = 1, limit = 10 } = request.query;
 
     try {
-        const products = await ProductService.getListProducts({page: Number(page), limit: Number(limit)});
-
-        return h.response(products).code(200);
-    } catch (error) {
-        console.error(error);
-        return h.response({ 
-            error: error.message || 'Internal Server Error' 
-        }).code(error.statusCode || 500);
-    }
-}
-
-async function getProductById(request, h) {
-    const { id } = request.params;
-    console.log(request.params);
-
-    try {
-        const product = await ProductService.getProductById(id);
-
-        return h.response(product).code(200);
-    } catch (error) {
-        console.error(error);
-        return h.response({ 
-            error: error.message || 'Internal Server Error' 
-        }).code(error.statusCode || 500);
-    }
-}
-
-async function createProduct(request, h) {
-    const data = request.payload;
-
-    try {
-        const product = await ProductService.createProduct(data);
-
-        return h.response(product).code(200);
-    } catch (error) {
-        console.error(error);
-        return h.response({ 
-            error: error.message || 'Internal Server Error' 
-        }).code(error.statusCode || 500);
-    }
-}
-
-async function updateProduct(request, h) {
-    const { id } = request.params;
-    const product = request.payload;
-
-    try {
-        const result = await ProductService.updateProduct(id, product);
+        const result = await Service.getList({page: Number(page), limit: Number(limit)});
 
         return h.response(result).code(200);
     } catch (error) {
@@ -62,11 +15,58 @@ async function updateProduct(request, h) {
     }
 }
 
-async function deleteProduct(request, h) {
+async function getById(request, h) {
+    const { id } = request.params;
+    console.log(request.params);
+
+    try {
+        const result = await Service.getById(id);
+
+        return h.response(result).code(200);
+    } catch (error) {
+        console.error(error);
+        return h.response({ 
+            error: error.message || 'Internal Server Error' 
+        }).code(error.statusCode || 500);
+    }
+}
+
+async function create(request, h) {
+    const data = request.payload;
+
+    try {
+        const result = await Service.create(data);
+
+        return h.response(result).code(201);
+    } catch (error) {
+        console.error(error);
+        return h.response({ 
+            error: error.message || 'Internal Server Error' 
+        }).code(error.statusCode || 500);
+    }
+}
+
+async function update(request, h) {
+    const { id } = request.params;
+    const payload = request.payload;
+
+    try {
+        const result = await Service.update(id, payload);
+
+        return h.response(result).code(200);
+    } catch (error) {
+        console.error(error);
+        return h.response({ 
+            error: error.message || 'Internal Server Error' 
+        }).code(error.statusCode || 500);
+    }
+}
+
+async function deleteData(request, h) {
     const { id } = request.params;
 
     try {
-        await ProductService.deleteProduct(id);
+        await Service.deleteData(id);
         
         return h.response().code(204);
     } catch (error) {
@@ -78,9 +78,9 @@ async function deleteProduct(request, h) {
 }
 
 module.exports = {
-    getListProducts,
-    getProductById,
-    createProduct,
-    updateProduct,
-    deleteProduct,
+    getList,
+    getById,
+    create,
+    update,
+    deleteData,
 };

@@ -1,19 +1,20 @@
-const ProductModel = require('../models/ProductModel');
+const Model = require('../models/ProductModel');
 
-async function getListProducts({page, limit}) {
+async function getList({page, limit}) {
     try {
-        const products = await ProductModel.getProducts({page, limit});
-        return products;
+        const result = await Model.getDatas({page, limit});
+
+        return result;
     } catch (error) {
         throw error;
     }
 }
 
-async function getProductById(id) {
+async function getById(id) {
     try {
-        const product = await ProductModel.getProductById(id);
-        if (product) {
-            return product;
+        const data = await Model.getById(id);
+        if (data) {
+            return data;
         }
 
         throw { statusCode: 404, message: "Product not found"};
@@ -22,22 +23,22 @@ async function getProductById(id) {
     }
 }
 
-async function createProduct(data) {
+async function create(data) {
     try {
-        const product = await ProductModel.createProduct(data);
+        const result = await Model.create(data);
 
-        return h.response(product).code(200);
+        return result;
     } catch (error) {
         throw error;
     }
 }
 
-async function updateProduct(id, data) {
+async function update(id, data) {
     try {
-        const product = await ProductModel.updateProduct(id, data);
+        const result = await Model.update(id, data);
 
-        if (product) {
-            return product;
+        if (result) {
+            return result;
         }
 
         throw { statusCode: 404, message: "Product not found"};
@@ -47,23 +48,21 @@ async function updateProduct(id, data) {
     }
 }
 
-async function deleteProduct(id) {
+async function deleteData(id) {
     try {
-        const deleted = await ProductModel.deleteProduct(id);
+        const deleted = await Model.deleteData(id);
         if (deleted) {
             return deleted;
         }
-
-        throw { statusCode: 404, message: "Product not found"};
     } catch (error) {
         throw error;
     }
 }
 
 module.exports = {
-    getListProducts,
-    getProductById,
-    createProduct,
-    updateProduct,
-    deleteProduct,
+    getList,
+    getById,
+    create,
+    update,
+    deleteData,
 };

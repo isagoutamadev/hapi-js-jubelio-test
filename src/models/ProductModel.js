@@ -6,7 +6,7 @@ async function count(query) {
     return rows[0].count;
 }
 
-async function getProducts({ page, limit }) {
+async function getDatas({ page, limit }) {
     const offset = (page - 1) * limit;
     let query = "SELECT id, name, price, image, stock FROM m_products WHERE deleted_at IS NULL";
 
@@ -24,7 +24,7 @@ async function getProducts({ page, limit }) {
     };
 }
 
-async function getProductById(id) {
+async function getById(id) {
     const query = `
     SELECT name, sku, image, price, stock, description FROM m_products
     WHERE id = :id AND deleted_at IS NULL
@@ -33,8 +33,8 @@ async function getProductById(id) {
     return rows[0];
 }
 
-async function createProduct(product) {
-    const { name, sku, image, price, description } = product;
+async function create(data) {
+    const { name, sku, image, price, description } = data;
     const query = `
     INSERT INTO products (name, sku, image, price, description)
     VALUES ($1, $2, $3, $4, $5)
@@ -44,8 +44,8 @@ async function createProduct(product) {
     return rows[0];
 }
 
-async function updateProduct(id, product) {
-    const { name, sku, image, price, description } = product;
+async function update(id, data) {
+    const { name, sku, image, price, description } = data;
     const query = `
     UPDATE m_products
     SET name = :name, sku = :sku, image = :image, price = :price, description = :description
@@ -56,7 +56,7 @@ async function updateProduct(id, product) {
 return rows[0];
 }
 
-async function deleteProduct(id) {
+async function deleteData(id) {
     const query = `
     UPDATE m_products
     SET sku = concat(sku, '-deleted-', now()), deleted_at = now()
@@ -64,13 +64,13 @@ async function deleteProduct(id) {
     RETURNING *
     `;
     const { rows } = await db.raw(query, {id});
-    return rows;
+    return true;
 }
 
 module.exports = {
-    getProducts,
-    getProductById,
-    createProduct,
-    updateProduct,
-    deleteProduct,
+    getDatas,
+    getById,
+    create,
+    update,
+    deleteData,
 };
