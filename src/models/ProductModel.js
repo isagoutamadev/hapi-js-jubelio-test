@@ -34,13 +34,14 @@ async function getById(id) {
 }
 
 async function create(data) {
-    const { name, sku, image, price, description } = data;
+    const { name, sku, image, price, stock, description = null } = data;
+    console.log(data);
     const query = `
-    INSERT INTO products (name, sku, image, price, description)
-    VALUES ($1, $2, $3, $4, $5)
+    INSERT INTO m_products (name, sku, image, price, stock, description)
+    VALUES (:name, :sku, :image, :price, :stock, :description)
     RETURNING *
     `;
-    const { rows } = await db.raw(query, [name, sku, image, price, description || null]);
+    const { rows } = await db.raw(query, { name, sku, image, price, stock, description });
     return rows[0];
 }
 
@@ -52,7 +53,7 @@ async function update(id, data) {
     WHERE id = :id
     RETURNING *
     `;
-    const { rows } = await db.raw(query, { name, sku, image, price, description: description || null, id});
+    const { rows } = await db.raw(query, { name, sku, image, price, description: description || null, id });
     return rows[0];
 }
 
@@ -63,7 +64,7 @@ async function deleteData(id) {
     WHERE id = :id
     RETURNING *
     `;
-    const { rows } = await db.raw(query, {id});
+    const { rows } = await db.raw(query, { id });
     return true;
 }
 
