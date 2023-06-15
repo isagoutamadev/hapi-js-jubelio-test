@@ -1,0 +1,26 @@
+{
+  "name": "test-hapi-node.js-jubelio",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "knex:migrate:make": "knex --knexfile ./knexfile.ts migrate:make",
+    "knex:migrate:latest": "knex --knexfile ./knexfile.ts migrate:latest",
+    "knex:migrate:rollback": "knex --knexfile ./knexfile.ts migrate:rollback",
+    "knex:migrate:up": "knex --knexfile ./knexfile.ts migrate:up",
+    "knex:migrate:down": "knex --knexfile ./knexfile.ts migrate:down",
+    "knex:seed:make": "knex --knexfile ./knexfile.ts seed:make",
+    "knex:seed:run": "knex --knexfile ./knexfile.ts seed:run"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@hapi/hapi": "^21.3.2",
+    "bcrypt": "^5.1.0",
+    "dotenv": "^16.1.4",
+    "jsonwebtoken": "^9.0.0",
+    "knex": "^2.4.2",
+    "pg": "^8.11.0"
+  }
+}
