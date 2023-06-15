@@ -2,11 +2,26 @@ const { exec } = require('node:child_process');
 const { CONTROLLER, SERVICE, MODEL, ROUTE } = require('./template');
 const fs = require('fs');
 const args = process.argv.slice(2);
-const moduleName = args[1];
+function capitalizeFirstLetter(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+}
+
+function validateLettersOnly(str) {
+    // Regular expression pattern to match only letters
+    const pattern = /^[a-zA-Z]+$/;
+    
+    // Test the input string against the pattern
+    return pattern.test(str);
+}
+
+const moduleName = capitalizeFirstLetter(args[1]);
 const moduleNameLower = moduleName.toLowerCase();
 
 // create module resources
 if (args[0] === 'make:module') {
+    if (!validateLettersOnly(moduleName)) {
+        throw new Error("Only letters allowed, no numbers or symbols ");
+    }
     
     // CREATE CONTROLLER
     const controllerContent = CONTROLLER.replace(/{MODULE_NAME_LOWER}/g, moduleNameLower)
