@@ -53,7 +53,7 @@ async function update(id, data) {
     RETURNING *
     `;
     const { rows } = await db.raw(query, { name, sku, image, price, description: description || null, id});
-return rows[0];
+    return rows[0];
 }
 
 async function deleteData(id) {
