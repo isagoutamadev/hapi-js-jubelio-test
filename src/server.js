@@ -1,6 +1,8 @@
 const Hapi = require('@hapi/hapi');
-const productRoutes = require('./routes/ProductRoute');
 require('dotenv').config();
+
+const authRoutes = require('./routes/AuthRoute');
+const productRoutes = require('./routes/ProductRoute');
 
 const server = Hapi.server({
     port: process.env.PORT,
@@ -8,6 +10,7 @@ const server = Hapi.server({
 });
 
 const init = async () => {
+    server.route(authRoutes);
     server.route(productRoutes);
 
     try {
