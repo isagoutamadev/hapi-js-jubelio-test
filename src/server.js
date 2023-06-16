@@ -4,6 +4,7 @@ const AuthService = require('./services/AuthService');
 
 const authRoutes = require('./routes/AuthRoute');
 const productRoutes = require('./routes/ProductRoute');
+const cartRoutes = require('./routes/CartRoute');
 
 const server = Hapi.server({
     port: process.env.PORT,
@@ -30,6 +31,7 @@ const init = async () => {
 
     server.route(authRoutes);
     server.route(productRoutes);
+    server.route(cartRoutes);
 
     try {
         await server.start();
