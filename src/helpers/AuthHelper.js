@@ -24,3 +24,14 @@ exports.jwtEncode = (data) => {
         
     return jwt.sign(data, key, {expiresIn: '1 days'});;
 }
+
+/**
+ * @params token: string
+ * @returns { User: { id: string, role: 'admin' || 'customer' } }
+ */
+exports.jwtDecode = (token) => {
+    const key = process.env.JWT_KEY || "";
+
+    decoded = jwt.verify(token, key);
+    return decoded;
+}

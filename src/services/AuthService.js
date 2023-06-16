@@ -8,7 +8,7 @@ async function getById(id) {
             return data;
         }
 
-        throw { statusCode: 404, message: "Product not found"};
+        throw { statusCode: 404, message: "User not found"};
     } catch (error) {
         throw error;
     }
