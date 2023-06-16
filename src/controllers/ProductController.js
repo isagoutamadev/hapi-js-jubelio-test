@@ -1,9 +1,10 @@
 const Service = require('../services/ProductService');
+const RoleMiddleware = require('../middlewares/RoleMiddleware');
 
 async function getList(request, h) {
-    const { page = 1, limit = 10 } = request.query;
-
+    
     try {
+        const { page = 1, limit = 10 } = request.query;
         const result = await Service.getList({page: Number(page), limit: Number(limit)});
 
         return h.response(result).code(200);
@@ -32,9 +33,10 @@ async function getById(request, h) {
 }
 
 async function create(request, h) {
-    const data = request.payload;
-
     try {
+        RoleMiddleware(request.credentials, ['admin']);
+
+        const data = request.payload;
         const result = await Service.create(data);
 
         return h.response(result).code(201);
@@ -47,10 +49,11 @@ async function create(request, h) {
 }
 
 async function update(request, h) {
-    const { id } = request.params;
-    const payload = request.payload;
-
     try {
+        RoleMiddleware(request.credentials, ['admin']);
+
+        const { id } = request.params;
+        const payload = request.payload;
         const result = await Service.update(id, payload);
 
         return h.response(result).code(200);
@@ -63,9 +66,10 @@ async function update(request, h) {
 }
 
 async function deleteData(request, h) {
-    const { id } = request.params;
-
     try {
+        RoleMiddleware(request.credentials, ['admin']);
+
+        const { id } = request.params;
         await Service.deleteData(id);
         
         return h.response().code(204);
