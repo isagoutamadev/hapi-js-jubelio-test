@@ -74,7 +74,7 @@ async function deleteData(request, h) {
         console.error(error);
         return h.response({ 
             error: error.message || 'Internal Server Error' 
-        }).code(error.code || 500);
+        }).code(error.statusCode || 500);
     }
 }
 
