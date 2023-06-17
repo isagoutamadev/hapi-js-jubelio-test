@@ -6,7 +6,7 @@ const AuthHelper = require('../../src/helpers/AuthHelper');
  */
 exports.seed = async function (knex) {
   // Deletes ALL existing entries
-  await knex('m_users').del()
+  await knex.raw("TRUNCATE m_users CASCADE");
   await knex('m_users').insert([
     {
       id: 1,

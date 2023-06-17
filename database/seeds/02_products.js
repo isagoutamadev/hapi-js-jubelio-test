@@ -4,7 +4,7 @@
  */
 exports.seed = async function (knex) {
   // Deletes ALL existing entries
-  await knex('m_products').del();
+  await knex.raw("TRUNCATE m_products CASCADE");
   const products = [];
   for (let i = 1; i <= 25; i++) {
     products.push({
