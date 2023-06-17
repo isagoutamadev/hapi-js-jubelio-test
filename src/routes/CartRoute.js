@@ -21,6 +21,11 @@ const routes = [
         path: '/cart/products/{product_id}',
         handler: Controller.deleteData,
     },
+    {
+        method: 'POST',
+        path: '/cart/checkout',
+        handler: Controller.checkout,
+    },
 ];
 
 module.exports = routes;

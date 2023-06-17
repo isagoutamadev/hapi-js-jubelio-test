@@ -83,9 +83,26 @@ async function deleteData(request, h) {
     }
 }
 
+async function checkout(request, h) {
+    try {
+        const authUser = request.auth.credentials;
+        RoleMiddleware(authUser, ['customer']);
+
+        const result = await Service.checkout(authUser.id);
+
+        return h.response(result).code(201);
+    } catch (error) {
+        console.error(error);
+        return h.response({
+            error: error.message || 'Internal Server Error'
+        }).code(error.statusCode || 500);
+    }
+}
+
 module.exports = {
     getList,
     create,
     update,
     deleteData,
+    checkout
 };

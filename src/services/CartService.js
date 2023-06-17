@@ -46,9 +46,39 @@ async function deleteData(data) {
     }
 }
 
+function findOrderQtyMoreThanStock(cartOrders = []) {
+    return cartOrders.find(item => item.qty > item.product.stock);
+}
+
+async function checkout(user_id) {
+    try {
+        const { datas: cartOrders } = await getList({ user_id });
+
+        const orderItemInvalid = findOrderQtyMoreThanStock(cartOrders);
+        if (orderItemInvalid) {
+            throw { statusCode: 433, message: `Product stock with name ${orderItemInvalid.product.name} is less than qty that ordered` };
+        }
+
+        const orders = cartOrders.map(item => {
+            return {
+                product_id: item.product.id,
+                qty: item.qty,
+                price: item.product.price
+            };
+        });
+
+        const result = await Model.checkout(user_id, orders);
+
+        return result;
+    } catch (error) {
+        throw error;
+    }
+}
+
 module.exports = {
     getList,
     create,
     update,
     deleteData,
+    checkout
 };
