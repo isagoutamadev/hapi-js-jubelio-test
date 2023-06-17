@@ -7,6 +7,15 @@ async function count(query) {
     return rows[0].count;
 }
 
+function getTotalPrice(orders = []) {
+    let totalPrice = 0;
+
+    orders.forEach(item => {
+        totalPrice += item.product.price * item.qty;
+    });
+
+    return totalPrice;
+}
 async function getDatas({ page, limit, user_id = 0 }) {
     let offset = undefined;
     if (page && limit) {
@@ -26,27 +35,13 @@ async function getDatas({ page, limit, user_id = 0 }) {
     INNER JOIN m_products as product ON (product.id = cart.product_id AND product.deleted_at IS NULL)
     WHERE cart.user_id = ${user_id}`;
 
-    const total = await count(query);
-
     const binding = {};
-    if (limit) {
-        binding.limit = limit;
-        query += " LIMIT :limit";
-    }
-
-    if (offset) {
-        binding.offset = offset;
-        query += " OFFSET :offset";
-    }
 
     console.log(binding);
     const { rows } = await db.raw(query, binding);
 
     return {
-        page: page,
-        limit: limit,
-        total_data: Number(total),
-        total_page: Math.ceil(total / limit),
+        total_price: getTotalPrice(rows),
         datas: rows
     };
 }
